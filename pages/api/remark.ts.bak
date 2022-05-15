@@ -1,0 +1,19 @@
+import { Mldoc } from 'mldoc'
+import { NextApiRequest, NextApiResponse } from 'next'
+import opml from 'opml'
+import { inspect } from 'util'
+import fs from 'fs'
+import { fromMarkdown } from 'mdast-util-from-markdown'
+import { syntax as wikiLinkSyntax } from 'micromark-extension-wiki-link'
+import * as wikiLink from 'mdast-util-wiki-link'
+
+export default function handler(req: NextApiRequest, res: NextApiResponse) {
+  const content = fs.readFileSync('./_posts/logseq01.md', 'utf8')
+  const output = fromMarkdown(content, {
+    extensions: [wikiLinkSyntax()],
+    mdastExtensions: [wikiLink.fromMarkdown({ permalinks: ['wiki_page'] })]
+  })
+  res.setHeader('content-type', 'application/json')
+  res.end(JSON.stringify(output))
+  //   console.log(Mldoc.parseAndExportMarkdown().toString())
+}

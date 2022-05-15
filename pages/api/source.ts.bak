@@ -1,0 +1,32 @@
+import { Mldoc } from 'mldoc'
+import { NextApiRequest, NextApiResponse } from 'next'
+import opml from 'opml'
+import { inspect } from 'util'
+import fs from 'fs'
+
+export default function handler(req: NextApiRequest, res: NextApiResponse) {
+  const content = fs.readFileSync('./_posts/logseq01.md', 'utf8')
+  const output = Mldoc.export(
+    'html',
+    content,
+    JSON.stringify({
+      toc: false,
+      parse_outline_only: false,
+      heading_number: false,
+      keep_line_break: false,
+      format: 'Markdown',
+      heading_to_list: true,
+      exporting_keep_properties: true,
+      inline_type_with_pos: false,
+      export_md_remove_options: [],
+      hiccup_in_block: true
+    }),
+    '{}'
+  )
+  //   opml.parse(output, (err: any, data: any) => {
+  //     console.log(inspect(data.opml.body, false, null, true))
+  //   })
+  res.setHeader('content-type', 'text/html')
+  res.end(output)
+  //   console.log(Mldoc.parseAndExportMarkdown().toString())
+}
