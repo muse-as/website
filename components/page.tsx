@@ -113,14 +113,9 @@ function Renderer({ data, children }: any) {
 
 export default function Page({ post }: any) {
   return (
-    <div className="text-slate-600 max-w-2xl mx-auto leading-6">
-      <Link href={'/'}>
-        <a>
-          <img src="/assets/logo.png" className="w-48 mt-10 mb-10" />
-        </a>
-      </Link>
-      <h1 className="text-3xl mb-5">{post.title}</h1>
+    <>
+      <h1 className="text-3xl mt-10 mb-5 capitalize">{post.title}</h1>
       <Renderer data={post.content} />
-    </div>
+    </>
   )
 }

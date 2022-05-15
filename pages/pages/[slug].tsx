@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router'
+import Link from 'next/link'
 import ErrorPage from 'next/error'
 import { open } from '../../lib/logseq'
 import Head from 'next/head'
@@ -23,8 +24,15 @@ const Post = ({ post }: { post: Post }) => {
   return (
     <Layout preview={false}>
       <Container>
-        <Page post={post} />
-        {/* <pre>{JSON.stringify(post.content, null, '  ')}</pre> */}
+        <div className="text-slate-600 max-w-2xl mx-auto leading-6">
+          <Link href={'/'}>
+            <a>
+              <img src="/assets/logo.png" className="w-48 mt-10 mb-10" />
+            </a>
+          </Link>
+          <Page post={post} />
+        </div>
+        <pre>{JSON.stringify(post.content, null, '  ')}</pre>
       </Container>
     </Layout>
   )

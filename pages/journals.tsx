@@ -1,16 +1,15 @@
 import Container from '../components/container'
 import Layout from '../components/layout'
-import Link from 'next/link'
+import Header from '../components/header'
 import Head from 'next/head'
-import Post from '../types/post'
 import Page from '../components/page'
-import { Store, open } from '../lib/logseq'
+import { Store, Journals, Post, open } from '../lib/logseq'
 
 type Props = {
-  post: Post
+  posts: Post[]
 }
 
-const Index = ({ post }: Props) => {
+const Index = ({ posts }: Props) => {
   return (
     <>
       <Layout>
@@ -18,13 +17,11 @@ const Index = ({ post }: Props) => {
           <title>muse foundation</title>
         </Head>
         <Container>
+          <Header></Header>
           <div className="text-slate-600 max-w-2xl mx-auto leading-6">
-            <Link href={'/'}>
-              <a>
-                <img src="/assets/logo.png" className="w-48 mt-10 mb-10" />
-              </a>
-            </Link>
-            <Page post={post} />
+            {posts.map((post) => (
+              <Page post={post} />
+            ))}
           </div>
         </Container>
       </Layout>
@@ -35,9 +32,16 @@ const Index = ({ post }: Props) => {
 export default Index
 
 export async function getStaticProps() {
+  const posts: Post[] = []
   if (Store.size === 0) {
-    const posts = await open('./logseq')
+    await open('./logseq')
   }
-  const post = Store.get('contents')
-  return { props: { post } }
+  for (const date of Journals) {
+    const post = Store.get(date)
+    if (post) {
+      posts.push(post)
+    }
+    posts.sort().reverse()
+  }
+  return { props: { posts } }
 }

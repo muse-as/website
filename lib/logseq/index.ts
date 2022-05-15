@@ -1,14 +1,16 @@
 import fs from 'fs'
 import fg from 'fast-glob'
+
 import { fromMarkdown } from 'mdast-util-from-markdown'
 import * as wikiLink from 'mdast-util-wiki-link'
 import mdastMetadata from 'mdast-add-list-metadata'
 import { syntax as wikiLinkSyntax } from 'micromark-extension-wiki-link'
 import { gfmAutolinkLiteralFromMarkdown } from 'mdast-util-gfm-autolink-literal'
 import { gfmAutolinkLiteral } from 'micromark-extension-gfm-autolink-literal'
-
 import { remove } from 'unist-util-remove'
 import { visit } from 'unist-util-visit'
+
+import format from 'date-fns/format'
 
 export interface Post {
   slug: string
@@ -16,9 +18,13 @@ export interface Post {
   filepath: string
   title: string
   content?: any
+  isJournal: boolean
 }
 
+const dateFormat = 'yyyy-MM-dd EEEE'
+
 export const Store: Map<string, Post> = new Map()
+export const Journals: string[] = []
 
 export async function open(path: string) {
   const _files = await fg(['**/*.md', '!**/logseq/bak'], { cwd: path })
@@ -37,10 +43,24 @@ export async function open(path: string) {
       }
     )
     const slug = toSlug(title)
+    const isJournal = file.includes('journals')
+    if (isJournal) {
+      const date = title.split('_')
+      Journals.push(slug)
+      title = format(
+        new Date(
+          parseInt(date[0], 10),
+          parseInt(date[1], 10),
+          parseInt(date[2], 10)
+        ),
+        dateFormat
+      )
+    }
     Store.set(slug, {
       slug,
       title,
       filepath,
+      isJournal,
       filename: file,
       content: mdast
     })
