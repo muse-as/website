@@ -32,7 +32,7 @@ const Post = ({ post }: { post: Post }) => {
           </Link>
           <Page post={post} />
         </div>
-        <pre>{JSON.stringify(post.content, null, '  ')}</pre>
+        {/* <pre>{JSON.stringify(post.content, null, '  ')}</pre> */}
       </Container>
     </Layout>
   )
