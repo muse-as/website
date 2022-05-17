@@ -34,7 +34,7 @@ const Meta = () => {
       <link rel="alternate" type="application/rss+xml" href="/feed.xml" />
       <meta
         name="description"
-        content={`A statically generated logseq data using Next.js and Markdown`}
+        content={`เราคือกลุ่มคนที่เชื่อว่า เราสามารถผลักดันนวัตกรรมต่างๆ ผ่านความมุ่งมั่น ความทุ่มเท เปิดกว้างทางโอกาส และมองปัญหาของสังคมเป็นที่ตั้ง เราจะสร้างผลกระทบที่ดีกับสังคม ได้มากกว่าผลประโยชน์ทางการเงินตามกรอบทุนนิยม ด้วยรูปแบบการสร้างองค์กรในลักษณะ community ใช้วิธีการทำงาน และความลื่นไหล คล่องตัวเหมือน Start-up แต่ไม่ได้มีเป้าหมายทางผลกำไรเป็นสำคัญ นอกจากหวังว่าในแต่ละวันที่ผ่านไปจะสร้างประโยชน์ให้กับสังคมได้มากขึ้น`}
       />
       <meta property="og:image" content={HOME_OG_IMAGE_URL} />
     </Head>
